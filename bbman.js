@@ -1,6 +1,6 @@
 const Topbar_height = 75;
 const Topbar_width = 750;
-
+const BLOCK_SIZE = 50;
 
 class Topbar {
     constructor() {
@@ -28,6 +28,36 @@ class Topbar {
     draw(ctx) {
         ctx.drawImage(this.model, 0, 0);
     }
+}
+
+class Wall {
+    constructor(gameContext){
+        this.model = document.createElement('canvas');
+        this.model.width = BLOCK_SIZE;
+        this.model.height = BLOCK_SIZE;
+        //this.model.style = "border: 1px solid black"
+        this.ctx = this.model.getContext('2d');
+        // this.ctx.fillStyle = "rgb(0,255,0";
+        // this.ctx.fillRect(x-1,y-1,52, 52);
+        this.game = gameContext;
+        this.imgLoaded = false;
+        this.img = new Image;
+        this.img.src = 'wall_bomberman_50px.png';
+        this.img.addEventListener('load',() => {
+            this.ctx.drawImage(this.img, 0, 0, 50, 50, x, y, 50, 50);
+            //this.ctx.drawImage(this.img, 0, 0, 50, 50, x, y, 50, 50);
+            this.imgLoaded = true;
+        })
+    }
+
+
+    draw(x, y){
+        if(!this.imgLoaded){
+            setTimeout(() => this.draw(x,y), 10);
+        }
+        this.game.drawImage(this.model, x * BLOCK_SIZE, y * BLOCK_SIZE);
+    }
+
 }
 
 class Bomberman {
